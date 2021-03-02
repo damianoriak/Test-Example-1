@@ -9,27 +9,140 @@
 </head>
 
 <body>
+    <script src="https://cdn.jsdelivr.net/gh/mathusummut/confetti.js/confetti.min.js"></script>
+    <script>
+        confetti.start()
+    </script>
 
     <div class="wrapper">
-        <div contenteditable class="password-input">
+
+        <div contenteditable class="password-input" onKeyDown="preventBackspace()">
         </div>
+        <div class="rect"></div>
+
+
         <div class="lever-wrap">
             <div class="lever-item lever-base"></div>
             <div class="lever-item lever-crank"></div>
             <div class="lever-item lever-top"></div>
 
         </div>
-    </div>
-    <div class="rect"></div>
+        <button type="button" id="myBtn">Submit</button>
 
+        <button type="button" id="myBtn2" onclick="btnFunction()">Try Again</button>
+
+        <div class="title">
+            <p>Enter </p>
+        </div>
+        <div class="title2">
+            <p>8 </p>
+        </div>
+        <div class="title3">
+            <p>Character </p>
+        </div>
+        <div class="title4">
+            <p>Password </p>
+        </div>
+
+
+
+    </div>
 </body>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
+    #myBtn {
+        position: absolute;
+        color: white;
+        background-color: black;
+        height: 40px;
+        Width: 100px;
+        font-family: Montserrat;
+        font-weight: 200;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px 15px;
+        top: 150%;
+        left: 10%;
+    }
+    
+    #myBtn2 {
+        position: absolute;
+        color: white;
+        background-color: black;
+        height: 40px;
+        Width: 100px;
+        font-family: Montserrat;
+        font-weight: 200;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px 15px;
+        top: 150%;
+        right: 5%;
+    }
+    
+    .button2 {
+        position: absolute;
+        color: white;
+        background-color: black;
+        height: 40px;
+        Width: 100px;
+        font-family: Montserrat;
+        font-weight: 200;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px 15px;
+        top: 150%;
+        right: 30%;
+    }
+    
+    p {
+        color: white;
+        font-family: Montserrat;
+        font-weight: 200;
+    }
+    
+    .title {
+        position: absolute;
+        font-size: 40px;
+        font-family: sans-serif;
+        padding: null;
+        bottom: 250%;
+        left: -40%;
+    }
+    
+    .title2 {
+        position: absolute;
+        font-size: 40px;
+        font-family: sans-serif;
+        padding: null;
+        bottom: 250%;
+        left: 0%
+    }
+    
+    .title3 {
+        position: absolute;
+        font-size: 40px;
+        font-family: sans-serif;
+        padding: null;
+        bottom: 250%;
+        left: 15%
+    }
+    
+    .title4 {
+        position: absolute;
+        font-size: 40px;
+        font-family: sans-serif;
+        padding: null;
+        bottom: 250%;
+        left: 85%
+    }
+    
     .password-input {
         background: white;
         height: 50px;
         width: 300px;
         font-size: 20px;
-        border: none;
+        border: 0 0 0 0;
         line-height: 50px;
         font-family: monospace;
         padding: 0 10px 0 0;
@@ -43,11 +156,11 @@
     
     .rect {
         position: absolute;
-        top: 50%;
-        left: 60.7%;
-        width: 30px;
-        height: 30px;
-        background-color: #F1BA4F;
+        top: 3%;
+        left: 103%;
+        width: 20px;
+        height: 45px;
+        background: #F1BA4F;
     }
     
     .lever-base {
@@ -82,10 +195,14 @@
         top: 25px;
     }
     
+    html {
+        height: 100%;
+        background: linear-gradient(0deg, #5e6ee6, #1e2975);
+        background-size: 100% 100%;
+    }
+    
     body {
-        background-color: #5887ef;
-        padding: 0;
-        margin: 0;
+        height: 0%;
     }
     
     .wrapper {
@@ -98,42 +215,175 @@
 </style>
 
 <script>
+    var blink = " ";
     var passwordInput = document.querySelector('.password-input');
+
     var lever = document.querySelector('.lever-wrap');
 
-    passwordInput.addEventListener("keydown", function(event) {
-        // if (event.isComposing || event.keyCode === 229) { 
-        //   // this is to find specific keys 
-        // }
-        lever.style.transform = "rotate(20deg)";
-        setTimeout(function() {
-            lever.style.transform = ""
-        }, 500);
 
-        var audio = new Audio('https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3');
-        audio.play();
+    ///^clears Input to try again////
+    let levpull = [{
+        transform: 'rotate(55deg)'
+    }];
 
-        var lastHTML = passwordInput.innerHTML;
-        var charNumber = event.keyCode;
-        passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 5);
-        setTimeout(function() {
-            passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 4);
-        }, 250);
-        setTimeout(function() {
-            passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 3);
-        }, 500);
-        setTimeout(function() {
-            passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 2);
-        }, 750);
-        setTimeout(function() {
-            passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 1);
-        }, 1000);
-        setTimeout(function() {
-            passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode);
-        }, 1500);
 
-        event.preventDefault();
-    });
+    function btnFunction() {
+        passwordInput.innerHTML = " ";
+    }
+
+    function preventBackspace(e) {
+        var evt = e || window.event;
+        if (evt) {
+            var keyCode = evt.charCode || evt.keyCode;
+            if (keyCode === 8 || keyCode === 46) {
+                if (evt.preventDefault) {
+                    evt.preventDefault();
+                } else {
+                    evt.returnValue = false;
+                }
+            }
+        }
+    }
+    ///^Prevents backspace
+
+    passwordInput.addEventListener("keypress",
+
+
+        function(event) {
+
+
+
+
+            //   // this is to find specific keys 
+            // 
+
+
+
+            setTimeout(function() {
+                confetti.start(250, 100);
+            }, 1300); //^called an external library containing a confetti animation script*FOUNDONLINE*//
+
+            lever.animate(levpull, 300);
+
+            var audio = new Audio('https://raw.githubusercontent.com/damianoriak/Test-Example-1/master/316931__timbre__lever-pull-one-armed-bandit-from-freesound-316887-by-ylearkisto.mp3');
+            audio.play();
+
+            setTimeout(function() {
+                var audio = new Audio('https://raw.githubusercontent.com/damianoriak/Test-Example-1/master/Reelcut%20converted.mp3');
+                audio.play();
+            }, 500);
+
+            setTimeout(function() {
+                var audio = new Audio('https://raw.githubusercontent.com/damianoriak/Test-Example-1/master/win.mp3');
+                audio.play();
+            }, 1450);
+
+            var lastHTML = passwordInput.innerHTML;
+            var charNumber = event.keyCode;
+
+            if (passwordInput.innerText.length < 7) {
+                //  block of code to be executed if the condition is true
+
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 16);
+                }, 300);
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 13);
+                }, 250);
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 4);
+                }, 500);
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 3);
+                }, 700);
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 2);
+                }, 950);
+
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode);
+                }, 1200)
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + blink;
+                }, 1300)
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode);
+                }, 1450)
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + blink;
+                }, 1600)
+
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode);
+                }, 1750)
+            } else {
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 16);
+                }, 300);
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 13);
+                }, 250);
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 4);
+                }, 500);
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 3);
+                }, 700);
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode - 2);
+                }, 950);
+
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode);
+                }, 1200)
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + blink;
+                }, 1300)
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode);
+                }, 1450)
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + blink;
+                }, 1600)
+
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode);
+                }, 1750)
+
+                setTimeout(function() {
+                    passwordInput.innerHTML = lastHTML + String.fromCharCode(event.keyCode + 4);
+                }, 1950)
+
+
+
+
+
+
+
+            }
+
+
+            event.preventDefault();
+        });
 </script>
 
 </html>
